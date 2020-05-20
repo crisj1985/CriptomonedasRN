@@ -1,13 +1,22 @@
 
-import React, {useState}from  "react";
+import React, {useState, useEffect}from  "react";
 import {StyleSheet,Text, View} from 'react-native';
 import { Picker } from '@react-native-community/picker';
+import axios from 'axios';
 
 
 const Formulario  = () =>{
 
     const [moneda, setMoneda] = useState('');
-    const [criptomoneda, setCriptomoneda] = useState('')
+    const [criptomoneda, setCriptomoneda] = useState('');
+    
+    useEffect(() => {
+        const ConsultarApi = async () => {
+                const url = 'https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD';
+                const resultado = await axios.get(url);
+
+        }
+    },[])
 
     const obtenerMoneda = (moneda) => {
     setMoneda(moneda);
