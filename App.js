@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
+import Cotizacion from './components/Cotizacion'
 import axios from 'axios';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
       const [moneda, setMoneda] = useState('');
       const [criptomoneda, setCriptomoneda] = useState('');
       const [consultarAPI, setConsultarAPI] = useState(false);
+      const [resultado, setResultado] = useState({});
 
       useEffect(() => {
        const cotizarCriptomoneda = async () => {
@@ -23,7 +25,7 @@ const App = () => {
              const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
              console.log(url);
              const resultado = await axios.get(url)
-             console.log(resultado.data.DISPLAY);
+             setResultado(resultado.data.DISPLAY[criptomoneda][moneda]);
              setConsultarAPI(false);
            }
         }
@@ -32,19 +34,22 @@ const App = () => {
 
   return (
     <>
-      <Header />
+      <ScrollView>
+        <Header />
 
-      <Image source={require('./assets/img/cryptomonedas.png')} style={styles.image} />
+        <Image source={require('./assets/img/cryptomonedas.png')} style={styles.image} />
 
-      <View style={styles.contenido}>
-        <Formulario
-          moneda={moneda}
-          criptomoneda={criptomoneda}
-          setMoneda={setMoneda}
-          setCriptomoneda={setCriptomoneda}
-          setConsultarAPI={setConsultarAPI}
-        />
-      </View>
+        <View style={styles.contenido}>
+          <Formulario
+            moneda={moneda}
+            criptomoneda={criptomoneda}
+            setMoneda={setMoneda}
+            setCriptomoneda={setCriptomoneda}
+            setConsultarAPI={setConsultarAPI}
+          />
+        </View>
+        <Cotizacion resultado={resultado} />
+      </ScrollView>
     </>
   )
 };
